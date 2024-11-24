@@ -14,6 +14,31 @@
         <h1>Medicine Tracker</h1>
     </header>
     <main>
+        <div id="medicine-list">
+
+        </div>
+
+        <div id="error-message"></div>
+
+        <div id="medform">
+            <form id="medicine-form">
+            <input type="text" id="medname" placeholder="Medicines Name: " required />
+            <input type="double" id="medprice" placeholder="Price:" required />
+            <button type="submit" id="submit-new">Add Medicine</button>
+        </form>
+        </div>
+
+        <div id="message"></div>
+
+        <div id="updateform">
+            <form id="update-form">
+            <input type="text" id="updatename" placeholder="Medicines Name: " required />
+            <input type="double" id="updateprice" placeholder="New Price: " required />
+            <button type="submit">Update Medicine</button>
+        </form>
+        </div>
+
+        <div id="message-update"></div>
 
     </main>
     <script src="script.js"></script>
