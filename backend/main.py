@@ -129,7 +129,7 @@ def delete_med(name: str = Form(...)):
 def average_price():
     with open('data.json') as meds:
         current_db = json.load(meds)
-        validprices = [med.get('price', 0) for med in current_db["medicines"] if isinstance(med.get('price'), (int, float))]
+        validprices = [med.get('price', 0) for med in current_db["medicines"] if isinstance(med.get('price'), (int, float)) and med.get('name')]
         totalprice = sum(validprices)
         count = len(validprices)
         average = totalprice / count if count else 0

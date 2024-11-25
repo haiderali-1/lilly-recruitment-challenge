@@ -120,131 +120,134 @@ const updateMedicine = async () => {
     });
 };
 
+//Fetch average price of medicines
 const fetchAvg = async () => {
-    const buttonpress = document.getElementById('average-price');
+    const buttonpress = document.getElementById('average-price'); //Button to fetch average price
     
-    buttonpress.addEventListener('click', async (event) => {
-        event.preventDefault();
+    buttonpress.addEventListener('click', async (event) => { //Event listener for button press
+        event.preventDefault(); //Prevents default behaviour
         
         try {
-            const response = await fetch('http://localhost:8000/average');
-            if (!response.ok) {
+            const response = await fetch('http://localhost:8000/average'); //Fetch average price from API
+            if (!response.ok) { //Error handler
                 throw new Error('Unable to fetch average price');
             }
-            const data = await response.json();
-            document.getElementById('message-average').innerText = `Average Price: £${data.average}`;
+            const data = await response.json(); //Parse the JSON reponse
+            document.getElementById('message-average').innerText = `Average Price: £${data.average}`; //Display average price
         } catch (error) {
-            console.error('Error fetching average price:', error);
-            document.getElementById('message-average').innerText = 'Error fetching average price';
+            console.error('Error fetching average price:', error); //Console log of errors
+            document.getElementById('message-average').innerText = 'Error fetching average price'; //Display error msg
         }
     });
 };
 
+//Delete a medicine
 const deleteMedicine = async () => {
-    const deleteform = document.getElementById('deleteform');
-    const confirmcheck = document.getElementById('confirmcheck');
-    const submitbutton = document.getElementById('submitbutton');
+    const deleteform = document.getElementById('deleteform'); //Access deleteform element
+    const confirmcheck = document.getElementById('confirmcheck'); //Access confirmation checkbox
+    const submitbutton = document.getElementById('submitbutton'); //Access delete button
 
-    confirmcheck.addEventListener('change', () =>{
+    confirmcheck.addEventListener('change', () =>{ //Change submit button from disabled to enabled when the checkbox is ticked
         submitbutton.disabled = false;
     });
 
-    deleteform.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    deleteform.addEventListener('submit', async (event) => { //Event listener for submission
+        event.preventDefault(); //Prevents default submission
 
-        const name = document.getElementById('delname').value;
-        console.log('Deleting: ', name);
+        const name = document.getElementById('delname').value; //Gets the medicine name input
+        console.log('Deleting: ', name); //Console log for deleting
 
-        if (!name) {
-            document.getElementById('message-delete').innerText = 'Please enter a valid name.';
+        if (!name) { //Validate the input
+            document.getElementById('message-delete').innerText = 'Please enter a valid name.'; //Error msg
             return;
         }  try {
-            const response = await fetch('http://localhost:8000/delete', {
+            const response = await fetch('http://localhost:8000/delete', { //Send DELETE request
             method: 'DELETE',
-            body: new URLSearchParams({ name: name })
+            body: new URLSearchParams({ name: name }) //Use the name as form data
     });
-    if(!response.ok){
+    if(!response.ok){ //Error handler
         throw new Error('Unable to delete medicine');
     }
-    const data = await response.json();
-    document.getElementById('message-delete').innerText = data.message;
+    const data = await response.json(); //Parse JSON response
+    document.getElementById('message-delete').innerText = data.message; //Display message
     setTimeout(function(){
-        document.getElementById('message-delete').innerText = '';}, 3000);
-    fetchMedicines();
+        document.getElementById('message-delete').innerText = '';}, 3000); //Display message dissappears after 3 seconds
+    fetchMedicines(); //Refresh list
 
-    const deleteformid = document.getElementById('delete-form');
-    deleteformid.reset();
-    submitbutton.disabled = true;
+    const deleteformid = document.getElementById('delete-form'); //Get delete-form element
+    deleteformid.reset(); //Reset delete form
+    submitbutton.disabled = true; //Disable the submission button again
 } catch (error) {
-    console.error('Error adding medicine:', error);
-    document.getElementById('message-delete').innerText = 'Error adding medicine.'; 
+    console.error('Error adding medicine:', error); //Console log of errors
+    document.getElementById('message-delete').innerText = 'Error adding medicine.'; //Display error msg
         }
     });
 };
 
+//Filter medicines by price
 const filterMedicine = async () => {
-const filterform = document.getElementById('filterform');
-filterform.addEventListener('submit', async(event) => {
-    event.preventDefault();
+const filterform = document.getElementById('filterform'); //Access filterform element
+filterform.addEventListener('submit', async(event) => { //Event listener for submission
+    event.preventDefault(); //Prevents default submission
 
-    const minprice = parseFloat(document.getElementById('minprice').value);
-    const maxprice = parseFloat(document.getElementById('maxprice').value);
+    const minprice = parseFloat(document.getElementById('minprice').value); //Gets the minimum price (user input)
+    const maxprice = parseFloat(document.getElementById('maxprice').value); //Gets the maximum price (user input)
 
-    if(isNaN(minprice) && isNaN(maxprice)){
-        document.getElementById('message-filter').innerText = 'Please enter valid numbers.';
-        setTimeout(() => { document.getElementById('message-filter').innerText = ''; }, 3000);
+    if(isNaN(minprice) && isNaN(maxprice)){ //Check for invalid inputs
+        document.getElementById('message-filter').innerText = 'Please enter valid numbers.'; //Display error message
+        setTimeout(() => { document.getElementById('message-filter').innerText = ''; }, 3000); //Error message goes after 3 seconds
         return;
     }
 
     try {
-        const response = await fetch('http://localhost:8000/medicines');
-        if(!response.ok){
+        const response = await fetch('http://localhost:8000/medicines'); //Fetch medicines from API
+        if(!response.ok){ //Error handler
             throw new Error('Unable to fetch medicines');
         }
-        const data = await response.json();
-        const list = document.getElementById('medicine-list');
-        list.innerHTML = '';
+        const data = await response.json(); //Parse JSON response
+        const list = document.getElementById('medicine-list'); //Access medicine list
+        list.innerHTML = ''; //Clear current list
 
-        const filter = data.medicines.filter(medicine => {
-            const price = parseFloat(medicine.price);
-            if (!medicine.name) return false;
-            if(!isNaN(minprice) && price < minprice) return false;
-            if(!isNaN(maxprice) && price > maxprice) return false;
+        const filter = data.medicines.filter(medicine => { //Filter medicines based on user price range
+            const price = parseFloat(medicine.price); //Parse price of each medicine
+            if (!medicine.name) return false; //Skip medicine if no name
+            if(!isNaN(minprice) && price < minprice) return false; //Exclude those below min price
+            if(!isNaN(maxprice) && price > maxprice) return false; //Exclude those above max price
             return true;
         });
 
         if(filter.length > 0){
-            filter.forEach(med => {
-                const populate = document.createElement('div');
-                populate.classList.add('medicine');
+            filter.forEach(med => { //If the fit requirements, display them
+                const populate = document.createElement('div'); //Container
+                populate.classList.add('medicine'); //Styling
         
-                const header = document.createElement('h3');
-                header.textContent = med.name;
+                const header = document.createElement('h3'); //Header
+                header.textContent = med.name; //Set name
 
-                const price = document.createElement('p');
+                const price = document.createElement('p'); //Paragraph
                 if (med.price == null){
-                    price.textContent = `N/A`;
+                    price.textContent = `N/A`; //If price null set it to N/A
                 } else {
-                    price.textContent = `Price: £${med.price}`;
+                    price.textContent = `Price: £${med.price}`; //Else set to its price
                 }
-                list.appendChild(populate);
-                populate.appendChild(header);
-                populate.appendChild(price);
+                list.appendChild(populate); //Container to list
+                populate.appendChild(header); //Add name
+                populate.appendChild(price); //Add price
             });
         } else {
-            list.innerHTML = "No Medicines Found"
+            list.innerHTML = "No Medicines Found" //If no medicines fit criteria return this
         }
     } catch(error){
-        console.error('An error has occurred when filtering medicines:', error);
-        document.getElementById('message-filter').innerText = 'Error filtering medicines.';
+        console.error('An error has occurred when filtering medicines:', error); //Console log of error
+        document.getElementById('message-filter').innerText = 'Error filtering medicines.'; //Display error message
     }
 });
 
-filterform.addEventListener('reset', async(event) => {
-    event.preventDefault();
-    document.getElementById('minprice').value = '';
-    document.getElementById('maxprice').value = '';
+filterform.addEventListener('reset', async(event) => { //Event listener for reset button
+    event.preventDefault(); //Prevent default behaviour
+    document.getElementById('minprice').value = ''; //Clear min input value
+    document.getElementById('maxprice').value = ''; //Clear max input value
 
-    fetchMedicines();
+    fetchMedicines(); //Fetch and display full list
 });
 };
