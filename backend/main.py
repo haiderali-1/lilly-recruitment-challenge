@@ -134,7 +134,7 @@ def average_price():
         count = len(validprices)
         average = totalprice / count if count else 0
         average = round(average, 2)
-    return {"Average Price": average}
+    return {"average": average}
 
 
 if __name__ == "__main__":

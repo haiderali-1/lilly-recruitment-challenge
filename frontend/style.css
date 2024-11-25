@@ -38,3 +38,158 @@ body {
     padding: 20px;
     border: none
 }
+
+#medform, #updateform, #deleteform {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+#submitbutton {
+    width: 100%;
+    padding: 12px;
+    background-color: #fd1900;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#submit-new {
+    padding: 12px;
+    background-color: #104102;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    position: relative;
+    top: -15px;
+}
+
+#submit-update {
+    padding: 12px;
+    background-color: #ca9f10;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    position: relative;
+    top: -15px;
+}
+
+#deleteform input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+header {
+    text-align: center;
+}
+
+#updateform input[type="text"] [type = "double"] {
+    width: 50%;
+    padding: 7px;
+    margin: 3px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+#medform input[type="text"] [type = "double"]{
+    width: 50%;
+    padding: 7px;
+    margin: 3px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+#message-delete, #message-update, #message {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    text-align: center;
+    color: #21bb61;
+}
+
+#confirm label {
+    font-size: 14px;
+    margin-bottom: 7px;
+    display: flex;
+    color: #555;
+    align-items: center;
+    gap: 8px;
+}
+
+#filterform {
+    margin: 20px 0;
+    padding: 15px;
+    max-width: 400px;
+    margin-left: 700px;
+}
+
+#filter-form {
+    display: flex;
+    gap: 10px;
+}
+
+#filter-form input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+#filter-form button {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#submit-filter {
+    background-color: #1d0241;
+    color: white;
+}
+
+#average-price {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    background-color: #4c00ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+#message-average {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #21bb61;
+}

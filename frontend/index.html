@@ -20,6 +20,21 @@
 
         <div id="error-message"></div>
 
+        <div id="filterform">
+            <form id="filter-form">
+             <input type="double" id="minprice" placeholder="Min Price:">
+             <input type="double" id="maxprice" placeholder="Max Price:">  
+             <button type="submit" id="submit-filter">Filter</button>  
+             <button type="reset" id="reset-filter">Reset</button>
+            </form>
+         </div>
+
+         <div id="message-filter"></div>
+
+         <button id="average-price">Get Average Price</button>
+
+         <div id="message-average"></div>
+
         <div id="medform">
             <form id="medicine-form">
             <input type="text" id="medname" placeholder="Medicines Name: " required />
@@ -34,11 +49,26 @@
             <form id="update-form">
             <input type="text" id="updatename" placeholder="Medicines Name: " required />
             <input type="double" id="updateprice" placeholder="New Price: " required />
-            <button type="submit">Update Medicine</button>
+            <button type="submit" id="submit-update">Update Medicine</button>
         </form>
         </div>
 
         <div id="message-update"></div>
+
+        <div id="deleteform">
+            <form id="delete-form">
+            <input type="text" id="delname" placeholder="Medicines Name: " required />
+            <div id="confirm">
+                <label>
+                    <input type="checkbox" id="confirmcheck">
+                    Are you sure you would like to delete this medicine?
+                </label>
+            </div>
+            <button type="submit" id="submitbutton" disabled>Delete Medicine</button>
+        </form>
+        </div>
+
+        <div id="message-delete"></div>
 
     </main>
     <script src="script.js"></script>
