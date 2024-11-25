@@ -39,7 +39,7 @@ body {
     border: none
 }
 
-#medform, #updateform, #deleteform {
+#addform, #updateform, #deleteform {
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
@@ -112,7 +112,7 @@ header {
     font-size: 13px;
 }
 
-#medform input[type="text"] [type = "double"]{
+#addform input[type="text"] [type = "double"]{
     width: 50%;
     padding: 7px;
     margin: 3px 0;
@@ -192,4 +192,44 @@ header {
     text-align: center;
     margin-bottom: 20px;
     color: #21bb61;
+}
+
+#message-filter {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ca2121;
+}
+
+#submit-update:hover{
+    background-color: #bbb81f;
+}
+
+#submit-new:hover{
+    background-color: #299c2f;
+}
+
+#submit-filter:hover {
+    background-color: #600160;
+}
+
+#reset-filter {
+    background-color: #ccc;
+    color: black;
+}
+
+#reset-filter:hover {
+    background-color: #b3b3b3;
+}
+
+#filter-form input:focus {
+    border-color: #104102;
+}
+
+#submitbutton:disabled {
+    background-color: #a5a4a4;
+    cursor: not-allowed;
+}
+
+#average-price:hover {
+    background-color: #243daa;
 }

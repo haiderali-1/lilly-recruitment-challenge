@@ -7,114 +7,115 @@ document.addEventListener("DOMContentLoaded", function() {
     fetchAvg();
 });
 
+//Fetch and display all medicines
 const fetchMedicines = async () => {
     try{
-    const response = await fetch('http://localhost:8000/medicines');
+    const response = await fetch('http://localhost:8000/medicines'); //Fetch medicines from API
     if(!response.ok){
-        throw new Error('Unable to fetch medicines');
+        throw new Error('Unable to fetch medicines'); //Error handler, typically executes when backend isnt running
     }
-    const data = await response.json(); 
-    const list = document.getElementById('medicine-list');
-    list.innerHTML = '';
+    const data = await response.json();  //Parse JSON response
+    const list = document.getElementById('medicine-list'); //Access to medicine-list
+    list.innerHTML = ''; //Clear any existing lists
     
-    if (data.medicines && data.medicines.length > 0) {
-    const validate = data.medicines.filter(med => med.name);
+    if (data.medicines && data.medicines.length > 0) { //Check for medicines
+    const validate = data.medicines.filter(med => med.name); //Makes sure medicines have a name
     validate.forEach(med => {
-        const populate = document.createElement('div');
-        populate.classList.add('medicine');
+        const populate = document.createElement('div'); //Create container for each medicine
+        populate.classList.add('medicine'); //Styling
         
-        const header = document.createElement('h3');
-        header.textContent = med.name;
+        const header = document.createElement('h3'); //Header for medicine name
+        header.textContent = med.name; //Set name
 
-        const price = document.createElement('p');
-        if (med.price == null){
-            price.textContent = `N/A`;
+        const price = document.createElement('p'); //Paragraph for price
+        if (med.price == null){ //If unable to find a price
+            price.textContent = `N/A`; //Set as null
         } else {
-            price.textContent = `Price: £${med.price}`;
+            price.textContent = `Price: £${med.price}`; //Else set it as the price
         }
         
-        list.appendChild(populate);
-        populate.appendChild(header);
-        populate.appendChild(price);
+        list.appendChild(populate); //Addition of container to list
+        populate.appendChild(header); //Add name to container
+        populate.appendChild(price); //Add price to container
      });
     } 
 } catch (error) {
-    console.error('An error has occurred when fetching medicines:', error);
-    document.getElementById('error-message').innerText = 'Error loading medicines.';
+    console.error('An error has occurred when fetching medicines:', error); //Connsole log of errors
+    document.getElementById('error-message').innerText = 'Error loading medicines.'; //Display error msg
 }
 };
 
-
+//Adding a new medicine
 const addMedicine = async () => {
-    const addform = document.getElementById('medform');
-    addform.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    const addform = document.getElementById('addform'); //Access addform element
+    addform.addEventListener('submit', async (event) => { //Event listener for submission
+        event.preventDefault(); //Prevents default submission
 
-        const name = document.getElementById('medname').value;
-        const price = parseFloat(document.getElementById('medprice').value);
-        console.log('Submitting: ', name, price);
+        const name = document.getElementById('medname').value; //Get the medicine name (user input)
+        const price = parseFloat(document.getElementById('medprice').value); //Get the price (user input)
+        console.log('Submitting: ', name, price); //Console log for submission
 
-        if (!name || isNaN(price)) {
-            document.getElementById('message').innerText = 'Please enter valid details.';
+        if (!name || isNaN(price)) { //Validate inputs
+            document.getElementById('message').innerText = 'Please enter valid details.';s //Error msg for if inputs are invalid
             return;
         }
         try {
-            const response = await fetch('http://localhost:8000/create', {
+            const response = await fetch('http://localhost:8000/create', { //Sending a POST request in order to add the medicine
             method: 'POST',
-            body: new URLSearchParams({ name: name, price: price })
+            body: new URLSearchParams({ name: name, price: price }) //Using the name and price as form data
     });
     if(!response.ok){
-        throw new Error('Unable to create medicine');
+        throw new Error('Unable to create medicine'); //Error handler
     }
-    const data = await response.json();
-    document.getElementById('message').innerText = data.message;
+    const data = await response.json(); //Parse the JSON response
+    document.getElementById('message').innerText = data.message; //Display message
     setTimeout(function(){
-        document.getElementById('message').innerText = '';}, 3000);
-    fetchMedicines();
+        document.getElementById('message').innerText = '';}, 3000); //Display message dissappears after 3 seconds
+    fetchMedicines(); //Refresh list
 
-    const medicineformid = document.getElementById('medicine-form');
-    medicineformid.reset();
+    const addformid = document.getElementById('add-form'); //Get add-form element
+    addformid.reset(); //Reset the form fields
 } catch (error) {
-    console.error('Error adding medicine:', error);
-    document.getElementById('message').innerText = 'Error adding medicine.'; 
+    console.error('Error adding medicine:', error); //Console log of errors
+    document.getElementById('message').innerText = 'Error adding medicine.'; //Display error msg
         }
     });
 };
 
 
-
+//Updating existing medicine
 const updateMedicine = async () => {
-    const updateform = document.getElementById('updateform');
-    updateform.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    const updateform = document.getElementById('updateform'); //Access updateform element
+    updateform.addEventListener('submit', async (event) => { //Event listener for submission
+        event.preventDefault(); //Prevents default submission
 
-        const name = document.getElementById('updatename').value;
-        const price = parseFloat(document.getElementById('updateprice').value);
-        console.log('Updating: ', name, price);
+        const name = document.getElementById('updatename').value; //Get medicine name input
+        const price = parseFloat(document.getElementById('updateprice').value); //Get medicine price input
+        console.log('Updating: ', name, price); //Console log for update
 
-        if (!name || isNaN(price)) {
-            document.getElementById('message-update').innerText = 'Please enter valid details.';
+        if (!name || isNaN(price)) { //Validating inputs
+            document.getElementById('message-update').innerText = 'Please enter valid details.'; //Error msg
             return;
         }
         try {
-            const response = await fetch ('http://localhost:8000/update', {
+            const response = await fetch ('http://localhost:8000/update', { //Sending a POST request to update the medicine
             method: 'POST',
-            body: new URLSearchParams({ name: name, price: price })
+            body: new URLSearchParams({ name: name, price: price }) //Using the name and price as form data
     });
-    if(!response.ok){
+    if(!response.ok){ //Error handler
         throw new Error('Unable to update medicine');
     }
-    const data = await response.json();
-    document.getElementById('message-update').innerText = data.message;
+    const data = await response.json(); //Parse the JSON response
+    document.getElementById('message-update').innerText = data.message; //Display message
     setTimeout(function(){
-        document.getElementById('message-update').innerText = '';}, 3000);
-    fetchMedicines();
+        document.getElementById('message-update').innerText = '';}, 3000); //Display message dissappears after 3 seconds
+    fetchMedicines(); //Refresh list
 
-    const updateformid = document.getElementById('update-form');
-    updateformid.reset();
+    const updateformid = document.getElementById('update-form'); //Get update-form element
+    updateformid.reset(); //Reset form fields
 } catch(error) {
-    console.error('Error updating medicine:', error);
-    document.getElementById('message-update').innerText = 'Error updating medicine.';
+    console.error('Error updating medicine:', error); //Console log of errors
+    document.getElementById('message-update').innerText = 'Error updating medicine.'; //Display error msg
         }
     });
 };
